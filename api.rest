@@ -1,0 +1,16 @@
+@host=http://localhost:4000/api/v1/
+
+GET {{host}}/farmer/all
+###
+
+POST {{host}}/farmer/register
+Content-Type: application/json
+
+{
+  "input": {
+    "firstname":"Obi",
+    "lastname":"Mbalanya",
+    "email":"random2@gmail.com",
+    "password": "dexerts"
+  }
+}
