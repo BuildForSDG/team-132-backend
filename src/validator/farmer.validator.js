@@ -6,5 +6,12 @@ export const FarmerValidator = object().shape({
   email: string().required().email(),
   password: string().required().min(5),
   phone: string().trim(),
-  alternatePhone: string().trim()
+  alternatePhone: string().trim(),
+  role: string()
+    .transform((value) => {
+      const res = this && this.isType(value) && value !== null ? value.toLowerCase() : value;
+      return res;
+    })
+    .oneOf(['farmer', 'insurance-company', 'agro-chemical-company', 'go-organic-company', 'buyer'])
+    .default('buyer')
 });

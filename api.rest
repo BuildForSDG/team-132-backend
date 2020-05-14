@@ -11,9 +11,6 @@ Content-Type: application/json
     "firstname":"Obi",
     "lastname":"Mbalanya",
     "email":"random2@gmail.com",
-    "password": "dexerts",
-    "role":{
-      "name":"farmer"
-    }
+    "password": "dexerts"
   }
 }

@@ -20,9 +20,7 @@ const input = {
   lastname: 'Mbalanya',
   email: 'random2@gmail.com',
   password: 'dexerts',
-  role: {
-    name: 'farmer'
-  }
+  role: 'farmer'
 };
 
 describe('test farmer registration', () => {

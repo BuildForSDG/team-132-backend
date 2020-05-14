@@ -25,8 +25,9 @@ const UserSchema = new Schema({
   phone: String,
   alternatePhone: String,
   role: {
-    name: String,
-    description: String
+    type: String,
+    enum: ['farmer', 'insurance-company', 'agro-chemical-company', 'go-organic-company', 'buyer'],
+    default: 'buyer'
   }
 });
 
