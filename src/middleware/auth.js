@@ -1,4 +1,3 @@
-import { User } from '../models/User';
 import { jwt } from 'jsonwebtoken';
 
 export const auth = (req, res, next) => {
@@ -9,7 +8,7 @@ export const auth = (req, res, next) => {
   try {
     const decoded = jwt.verify(token, process.env.SECRET_KEY);
     req.user = decoded.user;
-    next();
+    return next();
   } catch (error) {
     return res.status(401).json({ msg: 'token is invalid' });
   }

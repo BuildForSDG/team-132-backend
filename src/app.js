@@ -27,10 +27,6 @@ app.use('/api/v1/', router);
 // error handler
 app.use((err, req, res, _next) => res.status(err.status || 500).send({ error: err.message }));
 
-app.use((req, res) =>
-  res.status(404).json({
-    Message: 'URL DOES NOT EXIST, Please counter check'
-  })
-);
+app.use((req, res) => res.status(404).json({ Message: 'URL DOES NOT EXIST, Please counter check' }));
 
 export default app;
