@@ -22,7 +22,6 @@ beforeAll(async (done) => {
     .set('Accept', 'application/json')
     .end((err, res) => {
       if (err) return done(error);
-      console.log(res);
       done();
     });
 });
