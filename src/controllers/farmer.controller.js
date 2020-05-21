@@ -39,11 +39,11 @@ export class FarmerController {
       const { email, password } = validInput;
       const user = await User.findOne({ email });
       if (!user) {
-        return res.status(400).json({ error: [{ msg: 'Invalid credentials' }] });
+        return res.status(400).json({ error: [{ msg: 'Invalid credentials' }], success: false });
       }
       const isMatch = compare(password, user.password);
       if (!isMatch) {
-        return res.status(400).json({ error: [{ msg: 'Invalid credentials' }] });
+        return res.status(400).json({ error: [{ msg: 'Invalid credentials' }], success: false });
       }
       const payload = {
         user: {
@@ -52,10 +52,10 @@ export class FarmerController {
       };
       jwt.sign(payload, process.env.SECRET_KEY, { expiresIn: 360000 }, (err, token) => {
         if (err) throw err;
-        return res.json({ token });
+        return res.status(201).json({ token, success: true });
       });
     } catch (err) {
-      return res.status(400).json({ errors: err.errors });
+      return res.status(400).json({ errors: err.errors, success: false });
     }
   }
 }
