@@ -121,7 +121,6 @@ describe('Test ussd flow', () => {
       expect(res.status).toHaveBeenCalledWith(200);
       expect(res.contentType).toHaveBeenCalledWith('text/plain');
       expect(res.send).toHaveBeenCalledWith(message1);
-      console.log(`The msg i want to see ${message1}`);
     }
   });
 });

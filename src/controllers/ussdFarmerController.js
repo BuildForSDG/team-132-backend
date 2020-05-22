@@ -37,6 +37,7 @@ export default class UssdController {
 
           userLevel = newLevel.level;
         } catch (err) {
+          // eslint-disable-next-line no-console
           console.log(err);
         }
       }
