@@ -38,7 +38,7 @@ describe('sign in /', () => {
       .set('Accept', 'application/json')
       .end((err, res) => {
         if (err) return done(err);
-        expect(res.body.success).toBe(true);
+        expect(res.status).toBe(201);
         done();
       });
   });
