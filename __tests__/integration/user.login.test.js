@@ -9,10 +9,7 @@ const input = {
   password: '123456',
   role: 'farmer'
 };
-const loginCredentials = {
-  email: 'denniskyn80@gmail.com',
-  password: '123456'
-};
+
 beforeAll(async (done) => {
   await startTestDb();
   // app = startServer();
@@ -34,11 +31,11 @@ describe('sign in /', () => {
   test('it should sign in a user', (done) => {
     request(app)
       .post(`${baseUrl}/farmer/sign-in`)
-      .send(loginCredentials)
+      .send({ email: 'denniskyn80@gmail.com', password: '123456' })
       .set('Accept', 'application/json')
       .end((err, res) => {
         if (err) return done(err);
-        expect(res.status).toBe(201);
+        expect(res.status).toBe(200);
         done();
       });
   });
