@@ -36,8 +36,6 @@ describe('sign in /', () => {
       .post(`${baseUrl}/farmer/sign-in`)
       .send(loginCredentials)
       .set('Accept', 'application/json')
-      .expect('Content-Type', /json/)
-      .expect(201)
       .end((err, res) => {
         if (err) return done(err);
         expect(res.body.success).toBe(true);
