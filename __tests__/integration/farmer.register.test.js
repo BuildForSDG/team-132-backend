@@ -19,6 +19,8 @@ const input = {
   firstname: 'Obi',
   lastname: 'Mbalanya',
   email: 'random2@gmail.com',
+  idNumber: '12345678',
+  phoneNumber: '0700000000',
   password: 'dexerts',
   role: 'farmer'
 };
