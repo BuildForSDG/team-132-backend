@@ -6,6 +6,7 @@ export const FarmerValidator = object().shape({
   email: string().required().email(),
   password: string().required().min(5),
   phone: string().trim(),
+  idNumber: string().trim(),
   alternatePhone: string().trim(),
   role: string()
     .transform((value) => {
@@ -13,7 +14,7 @@ export const FarmerValidator = object().shape({
       return res;
     })
     .oneOf(['farmer', 'insurance-company', 'agro-chemical-company', 'go-organic-company', 'buyer'])
-    .default('buyer')
+    .default('farmer')
 });
 export const validateSignIn = object().shape({
   email: string().required().email(),
