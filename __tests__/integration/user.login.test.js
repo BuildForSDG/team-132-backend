@@ -18,8 +18,9 @@ beforeAll(async (done) => {
     .send(input)
     .set('Accept', 'application/json')
     .end((err, res) => {
-      if (err) return done(error);
-      done();
+      if (err) return done(err);
+      res.send('sucess');
+      return done();
     });
 });
 
@@ -36,7 +37,7 @@ describe('sign in /', () => {
       .end((err, res) => {
         if (err) return done(err);
         expect(res.status).toBe(200);
-        done();
+        return done();
       });
   });
   test('it should not sign in a user', (done) => {
@@ -48,7 +49,7 @@ describe('sign in /', () => {
       .end((err, res) => {
         if (err) return done(err);
         expect(res.body.success).toBe(false);
-        done();
+        return done();
       });
   });
 });
