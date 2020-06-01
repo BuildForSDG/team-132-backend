@@ -50,10 +50,9 @@ export class FarmerController {
           id: user.id
         }
       };
-      jwt.sign(payload, process.env.SECRET_KEY, { expiresIn: 360000 }, (err, token) => {
-        if (err) throw err;
-        return res.status(200).json({ token, success: true });
-      });
+
+      const token = await jwt.sign(payload, process.env.SECRET_KEY, { expiresIn: 360000 });
+      return res.status(200).json({ token, success: true });
     } catch (err) {
       return res.status(400).json({ errors: err.errors, success: false });
     }
