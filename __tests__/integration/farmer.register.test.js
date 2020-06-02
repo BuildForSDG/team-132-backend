@@ -40,7 +40,7 @@ describe('test farmer registration', () => {
   test('will register a user successfully', (done) => {
     request(app)
       .post(`${baseUrl}/farmer/register`)
-      .send({ input })
+      .send(input)
       .set('Accept', 'application/json')
       .expect('Content-Type', /json/)
       .expect(200)
@@ -54,7 +54,7 @@ describe('test farmer registration', () => {
   test('will fail to register a user with same email twice', (done) => {
     request(app)
       .post(`${baseUrl}/farmer/register`)
-      .send({ input })
+      .send(input)
       .set('Accept', 'application/json')
       .expect('Content-Type', /json/)
       .expect(400)

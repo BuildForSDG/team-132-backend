@@ -3,11 +3,10 @@ import { FarmerController } from '../controllers/farmer.controller';
 import UssdController from '../controllers/ussdFarmerController';
 
 const router = Router();
-const { register, getAll } = FarmerController;
-const { registerFarmer } = UssdController;
-
+const { register, getAll, signIn } = FarmerController;
 router.post('/register', register);
-
+router.post('/sign-in', signIn);
+const { registerFarmer } = UssdController;
 router.get('/all', getAll);
 router.post('/create-ussd-account', registerFarmer);
 

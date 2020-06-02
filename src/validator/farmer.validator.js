@@ -16,3 +16,7 @@ export const FarmerValidator = object().shape({
     .oneOf(['farmer', 'insurance-company', 'agro-chemical-company', 'go-organic-company', 'buyer'])
     .default('farmer')
 });
+export const validateSignIn = object().shape({
+  email: string().required().email(),
+  password: string().required().min(5)
+});
