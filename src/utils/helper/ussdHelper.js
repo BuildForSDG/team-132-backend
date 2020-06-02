@@ -11,6 +11,10 @@ export const checkUser = async (phoneNumber) => {
 
 export const ussdLevels = {
   home: 'home',
+  farmInput1: 'farmInput1',
+  farmInput2: 'farmInput2',
+  farmInput3: 'farmInput3',
+  farmInput4: 'farmInput4',
   upload1: 'upload1',
   upload2: 'upload2',
   upload3: 'upload3',
