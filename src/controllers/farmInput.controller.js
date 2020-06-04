@@ -19,7 +19,7 @@ export default class FarmInputController {
   }
 
   static async updateFarmInput(req, res) {
-    const { role } = req.user;
+    const { role, id } = req.user;
     if (role !== 'agro-chemical-company') {
       return res.status(401).send({ msg: 'you are not authorized to make this request' });
     }
@@ -27,6 +27,7 @@ export default class FarmInputController {
       const validInput = await farmInputValidator.validate(req.body, { abortEarly: false });
       const farmInputId = req.params.id;
       const farmInput = await FarmInput.findOne({ _id: farmInputId });
+      if (id !== farmInput.user) return res.status(401).send({ msg: 'you are not authorized to make this request' });
       if (!farmInput) return res.status(400).json({ msg: 'product not found', success: false });
 
       const { name, price, description } = validInput;
