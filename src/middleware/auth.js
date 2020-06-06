@@ -13,3 +13,10 @@ export const auth = async (req, res, next) => {
     return res.status(401).json({ msg: 'token is invalid' });
   }
 };
+export const agroChemicalMiddleware = (req, res, next) => {
+  const { role } = req.user;
+  if (role !== 'agro-chemical-company') {
+    return res.status(401).send({ msg: 'you are not authorized to make this request' });
+  }
+  return next();
+};
