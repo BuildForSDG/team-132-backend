@@ -15,8 +15,7 @@ export const auth = async (req, res, next) => {
 };
 export const agroChemicalMiddleware = (req, res, next) => {
   const { role } = req.user;
-  if (role !== 'agro-chemical-company') {
-    return res.status(401).send({ msg: 'you are not authorized to make this request' });
-  }
+  if (role !== 'agro-chemical-company') return res.status(401).send({ msg: 'you are not authorized' });
+
   return next();
 };

@@ -21,9 +21,8 @@ export default class FarmInputController {
       const farmInputId = req.params.id;
       const farmInput = await FarmInput.findOne({ _id: farmInputId });
       if (!farmInput) return res.status(400).json({ msg: 'product not found', success: false });
-      if (id.toString() !== farmInput.user.toString()) {
-        return res.status(401).send({ msg: 'dddyou are not authorized to make this request' });
-      }
+      if (id.toString() !== farmInput.user.toString()) return res.status(401).send({ msg: 'you are not authorized' });
+
       const { name, price, description } = validInput;
       const { imageUrl, quantity } = validInput;
       farmInput.name = name;
