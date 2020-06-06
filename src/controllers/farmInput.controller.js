@@ -9,8 +9,8 @@ export default class FarmInputController {
       const farmInput = new FarmInput({ user: id, ...validInput });
       await farmInput.save();
       return res.status(200).json({ farmInput, success: true });
-    } catch (err) {
-      return res.status(400).json({ errors: err.errors, success: false });
+    } catch (error) {
+      return res.status(400).json({ errors: error.errors, success: false });
     }
   }
 
@@ -33,7 +33,7 @@ export default class FarmInputController {
       const result = await farmInput.save();
       return res.status(200).json({ result, success: true });
     } catch (err) {
-      return res.status(400).json({ errors: err, success: false });
+      return res.status(400).send({ success: false });
     }
   }
 
@@ -52,7 +52,7 @@ export default class FarmInputController {
       const result = await FarmInput.find({ _id: id }).populate('user', '-password').exec();
       return res.status(200).json({ data: result, success: true });
     } catch (err) {
-      return res.status(400).json({ errors: err.errors, success: false });
+      return res.status(400).json({ errors: err, success: false });
     }
   }
 }
