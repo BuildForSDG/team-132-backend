@@ -2,8 +2,9 @@ import Level from '../models/sessionLevel';
 import User from '../models/ussdUserModel';
 import Product from '../models/Product';
 import FarmInput from '../models/requestInputs';
-import { checkUser, ussdLevels } from '../utils/helper/ussdHelper';
+import { checkUser, ussdLevels, farmingInfo } from '../utils/helper/ussdHelper';
 import { validateEmail, validateID } from '../utils/helper/helper';
+import sendSms from '../utils/helper/sendSms';
 
 export default class UssdController {
   static async registerFarmer(req, res) {
@@ -67,7 +68,9 @@ export default class UssdController {
 
             break;
           case '2':
-            message = 'CON Please enter the name of the farm input that you require.';
+            // eslint-disable-next-line max-len
+            await Level.findOneAndUpdate({ phoneNumber }, { $set: { level: ussdLevels.farmingInfo1 } });
+            message = 'CON Please enter category of farming(i.e maize, wheat, tomato,patatoes, etc).';
             res.contentType('text/plain');
             res.status(200).send(message);
 
@@ -82,10 +85,10 @@ export default class UssdController {
 
           default:
             message = 'CON Invalid choice, please select a valid choice.\n';
-            message += '2. Request Farm Inputs.\n';
-            message += '3. Request Farming Information.\n';
-            message += '4. Request Insurance Cover.\n';
-            message += '5. Upload Product.\n';
+            message += '1. Request Farm Inputs.\n';
+            message += '2. Request Farming Information.\n';
+            message += '3. Request Insurance Cover.\n';
+            message += '4. Upload Product.\n';
 
             res.contentType('text/plain');
             res.status(200).send(message);
@@ -251,6 +254,49 @@ export default class UssdController {
         }
       }
 
+      // handle farming information request option 1  case 1 here
+      if (userLevel === ussdLevels.farmingInfo1) {
+        switch (lastUserInput) {
+          case '':
+            // eslint-disable-next-line operator-linebreak
+            message =
+              'CON Please enter category of farming(i.e maize, wheat, tomato,patatoes, etc)  or press 0 to go back.';
+            res.contentType('text/plain');
+            res.status(200).send(message);
+            break;
+
+          case '0':
+            // downgrade the level to home and present the menu
+            await Level.findOneAndUpdate({ phoneNumber }, { $set: { level: ussdLevels.home } });
+            // provide menu options
+            message = 'CON Please select an option.\n';
+            message += '1. Request Farm Inputs.\n';
+            message += '2. Request Farming Information.\n';
+            message += '3. Request Insurance Cover.\n';
+            message += '4. Upload A Product.\n';
+            res.contentType('text/plain');
+            res.status(200).send(message);
+            break;
+          default:
+            // send user a message
+            // update the Product doc with location
+            await farmingInfo.map(async (cur) => {
+              if (cur.category === lastUserInput) {
+                const { description, company, bestSeeds } = cur;
+                const msg = `Thank you for using goOrganic, here is the details about farming ${lastUserInput}.Below is a brief information that can help you in organic farming from ${company}, the best seed that you can use is: ${bestSeeds}, brief description on this farming ${description} `;
+                await sendSms(phoneNumber, msg);
+              }
+            });
+            // eslint-disable-next-line max-len
+            await Level.findOneAndUpdate({ phoneNumber }, { $set: { level: ussdLevels.home } });
+            // eslint-disable-next-line operator-linebreak
+            message =
+              'END Your request has been received, and you will receive an sms shortly regarding infomation that you requested.\n';
+            res.contentType('text/plain');
+            res.status(200).send(message);
+            break;
+        }
+      }
       // handle option 4 for uploading case 1 here
       if (userLevel === ussdLevels.upload1) {
         switch (lastUserInput) {
