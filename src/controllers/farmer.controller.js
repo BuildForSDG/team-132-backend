@@ -1,6 +1,7 @@
 import jwt from 'jsonwebtoken';
 import { compare } from 'bcrypt';
 import { User } from '../models/User';
+import UssdUsers from '../models/ussdUserModel';
 import { FarmerValidator, validateSignIn } from '../validator/farmer.validator';
 import { FarmerService } from '../services/farmer.service';
 
@@ -24,7 +25,7 @@ export class FarmerController {
     }
   }
 
-  static async getAll(req, res, next) {
+  static async getAllUsers(req, res, next) {
     try {
       const result = await User.find({});
       return res.status(200).send({ data: result });
@@ -60,6 +61,63 @@ export class FarmerController {
       });
     } catch (err) {
       return res.status(400).json({ errors: err.errors, success: false });
+    }
+  }
+
+  // get all farmers
+  static async getAllFarmers(req, res, next) {
+    try {
+      const farmers = await UssdUsers.find({}).where({ role: 'farmer' });
+      return res.status(200).json({ data: farmers });
+    } catch (error) {
+      return next(error);
+    }
+  }
+
+  // view a single farmer
+  static async getSingleFarmer(req, res) {
+    let farmer;
+    try {
+      farmer = await UssdUsers.findById(req.params.id);
+    } catch (e) {
+      return res.status(404).json({
+        status: false,
+        Message: 'Wrong id passed, No farmer found'
+      });
+    }
+
+    if (!farmer) {
+      return res.status(404).json({
+        status: false,
+        Message: 'Farmer with this id not found'
+      });
+    }
+
+    return res.status(200).json({
+      status: 'success',
+      Message: 'Farmer retrieved successfully',
+      farmer
+    });
+  }
+
+  // delete a farmer
+  static async deleteFarmer(req, res, next) {
+    try {
+      const farmer = await UssdUsers.findByIdAndDelete(req.params.id);
+      if (!farmer) {
+        return res.status(404).json({
+          status: false,
+          Message: 'A farmer with this id does not exist'
+        });
+      }
+      await farmer.remove();
+
+      return res.status(204).json({
+        status: true,
+        Message: 'A farmer deleted successfully'
+      });
+    } catch (e) {
+      return next(e);
     }
   }
 }
