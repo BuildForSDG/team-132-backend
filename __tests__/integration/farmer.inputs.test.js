@@ -17,6 +17,7 @@ beforeAll(async (done) => {
     .post(`${baseUrl}/farmer/sign-in`)
     .send({ email: 'denniskyn80@gmail.com', password: '123456' })
     .set('Accept', 'application/json')
+    .expect(400)
     .end((err, res) => {
       if (err) return done(err);
       return done(res.body.token);
