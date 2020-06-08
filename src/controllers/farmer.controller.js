@@ -45,6 +45,7 @@ export class FarmerController {
       if (!isMatch) {
         return res.status(400).json({ error: [{ msg: 'Invalid credentials' }], success: false });
       }
+      // capture user role in user payload when user is logging in
       const payload = {
         user: {
           id: user.id,
@@ -53,7 +54,10 @@ export class FarmerController {
       };
 
       const token = await jwt.sign(payload, process.env.SECRET_KEY, { expiresIn: 360000 });
-      return res.status(200).json({ token, success: true });
+      return res.status(200).json({
+        token: `Bearer ${token}`,
+        success: true
+      });
     } catch (err) {
       return res.status(400).json({ errors: err.errors, success: false });
     }

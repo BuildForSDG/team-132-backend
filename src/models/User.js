@@ -26,8 +26,8 @@ const UserSchema = new Schema({
   alternatePhone: String,
   role: {
     type: String,
-    enum: ['farmer', 'insurance-company', 'agro-chemical-company', 'go-organic-company', 'buyer'],
-    default: 'buyer'
+    enum: ['farmer', 'insurance-company', 'agro-chemical-company', 'go-organic-company', 'buyer', 'admin'],
+    default: 'farmer'
   }
 });
 
