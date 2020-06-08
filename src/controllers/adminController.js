@@ -1,6 +1,7 @@
 import { AdminService } from '../services/admin.service';
 import { insuranceValidator } from '../validator/admin.validator';
 import Insurance from '../models/insuranceCompany';
+import Product from '../models/Product';
 
 export class AdminController {
   // register insurance company
@@ -78,6 +79,67 @@ export class AdminController {
       return res.status(204).json({
         status: true,
         Message: 'Company deleted successfully'
+      });
+    } catch (e) {
+      return next(e);
+    }
+  }
+
+  // get all uploaded products
+  static async getAllUploadedProducts(req, res, next) {
+    try {
+      const products = await Product.find({});
+      return res.status(200).json({
+        status: 'success',
+        message: 'Products returned successfully',
+        data: products
+      });
+    } catch (error) {
+      return next(error);
+    }
+  }
+
+  // get a single product
+  static async getSingleProduct(req, res) {
+    let product;
+    try {
+      product = await Product.findById(req.params.id);
+    } catch (e) {
+      return res.status(404).json({
+        status: false,
+        Message: 'Wrong id passed, No product found'
+      });
+    }
+
+    if (!product) {
+      return res.status(404).json({
+        status: false,
+        Message: 'Product with this id does not exist'
+      });
+    }
+
+    return res.status(200).json({
+      status: 'success',
+      Message: 'Products retrieved successfully',
+      product
+    });
+  }
+
+  // delete a single product
+  static async deleteProduct(req, res, next) {
+    try {
+      const product = await Product.findByIdAndDelete(req.params.id);
+      if (!product) {
+        return res.status(404).json({
+          status: false,
+          Message: 'Product with this id does not exist'
+        });
+      }
+      await product.remove();
+
+      return res.status(204).json({
+        status: true,
+        Message: 'Product deleted successfully'
       });
     } catch (e) {
       return next(e);
