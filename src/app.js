@@ -24,6 +24,9 @@ app.get('/', (req, res) => {
 });
 app.use('/api/v1/', router);
 
+/* extract input from form data */
+app.use(express.urlencoded());
+
 // error handler
 app.use((err, req, res, _next) => res.status(err.status || 500).send({ error: err.message }));
 
