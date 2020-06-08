@@ -3,10 +3,6 @@ import createBestPractice from '../controllers/bestPractices.controller';
 
 const router = Router();
 
-router.post('/submit-form', (req, res, next) => {
-  createBestPractice({ ...req.body });
-  res.json({ success: 'action posted' });
-  next();
-});
+router.post('/submit-form', createBestPractice());
 
 export default router;
