@@ -4,8 +4,8 @@ import { farmInputValidator } from '../validator/farmInputValidator';
 export default class FarmInputController {
   static async postInput(req, res) {
     try {
-      const validInput = await farmInputValidator.validate(req.body, { abortEarly: false });
       const { id } = req.user;
+      const validInput = await farmInputValidator.validate(req.body, { abortEarly: false });
       const farmInput = new FarmInput({ user: id, ...validInput });
       await farmInput.save();
       return res.status(200).json({ farmInput, success: true });
