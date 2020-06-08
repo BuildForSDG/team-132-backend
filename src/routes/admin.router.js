@@ -26,4 +26,19 @@ router.get('/products/:id', isAuth, accessControl.restrictAccessTo('admin'), Adm
 
 router.get('/products/:id', isAuth, accessControl.restrictAccessTo('admin'), AdminController.deleteProduct);
 
+// handle all agro chemicals operation here
+router.get('/agro-companies', isAuth, accessControl.restrictAccessTo('admin'), AdminController.getAllAgroChemicals);
+router.get(
+  '/agro-companies/:id',
+  isAuth,
+  accessControl.restrictAccessTo('admin'),
+  AdminController.getSingleAgroChemical
+);
+router.delete(
+  '/agro-companies/:id',
+  isAuth,
+  accessControl.restrictAccessTo('admin'),
+  AdminController.deleteAgroChemical
+);
+
 export default router;

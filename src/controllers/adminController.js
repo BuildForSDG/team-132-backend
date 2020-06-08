@@ -2,6 +2,7 @@ import { AdminService } from '../services/admin.service';
 import { insuranceValidator } from '../validator/admin.validator';
 import Insurance from '../models/insuranceCompany';
 import Product from '../models/Product';
+import { User } from '../models/User';
 
 export class AdminController {
   // register insurance company
@@ -140,6 +141,69 @@ export class AdminController {
       return res.status(204).json({
         status: true,
         Message: 'Product deleted successfully'
+      });
+    } catch (e) {
+      return next(e);
+    }
+  }
+
+  // Handle agro-chemicals companies here
+
+  // get all agro chemicals companies
+  static async getAllAgroChemicals(req, res, next) {
+    try {
+      const agroChemicals = await User.find({}).where({ role: 'agro-chemical-company' });
+      return res.status(200).json({
+        status: 'success',
+        message: 'Agro chemicals companies returned successfully',
+        data: agroChemicals
+      });
+    } catch (error) {
+      return next(error);
+    }
+  }
+
+  // view a single agro-chemical company here
+  static async getSingleAgroChemical(req, res) {
+    let agroChemicalCompany;
+    try {
+      agroChemicalCompany = await User.findById(req.params.id);
+    } catch (e) {
+      return res.status(404).json({
+        status: false,
+        Message: 'Wrong id passed, No agro chemical company found'
+      });
+    }
+
+    if (!agroChemicalCompany) {
+      return res.status(404).json({
+        status: false,
+        Message: 'agro chemical company with this does not exist'
+      });
+    }
+
+    return res.status(200).json({
+      status: 'success',
+      Message: 'Agro chemical company retrieved successfully',
+      agroChemicalCompany
+    });
+  }
+
+  // delete agro chemical company
+  static async deleteAgroChemical(req, res, next) {
+    try {
+      const agroChemicalCompany = await User.findByIdAndDelete(req.params.id);
+      if (!agroChemicalCompany) {
+        return res.status(404).json({
+          status: false,
+          Message: 'agro chemical company with this does not exist'
+        });
+      }
+      await agroChemicalCompany.remove();
+
+      return res.status(204).json({
+        status: true,
+        Message: 'agro chemical company successfully'
       });
     } catch (e) {
       return next(e);
