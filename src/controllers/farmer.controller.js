@@ -12,7 +12,7 @@ export class FarmerController {
       const cleanInput = await FarmerValidator.validate(input, { abortEarly: false });
 
       const result = await FarmerService.add(cleanInput);
-      if (!result) return res.status(400).send({ success: false, message: 'user with email already exists' });
+      if (!result) return res.status(400).send({ status: false, message: 'user with email already exists' });
       return res.status(200).send({
         success: !!result
       });
@@ -45,14 +45,19 @@ export class FarmerController {
       if (!isMatch) {
         return res.status(400).json({ error: [{ msg: 'Invalid credentials' }], success: false });
       }
+      // capture user role in user payload when user is logging in
       const payload = {
         user: {
-          id: user.id
+          id: user.id,
+          role: user.role
         }
       };
 
       const token = await jwt.sign(payload, process.env.SECRET_KEY, { expiresIn: 360000 });
-      return res.status(200).json({ token, success: true });
+      return res.status(200).json({
+        token: `Bearer ${token}`,
+        success: true
+      });
     } catch (err) {
       return res.status(400).json({ errors: err.errors, success: false });
     }

@@ -40,6 +40,7 @@ export const ussdLevels = {
   farmInput3: 'farmInput3',
   farmInput4: 'farmInput4',
   farmingInfo1: 'farmingInfo1',
+  insuranceCover1: 'insuranceCover1',
   upload1: 'upload1',
   upload2: 'upload2',
   upload3: 'upload3',

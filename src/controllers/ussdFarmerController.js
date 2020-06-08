@@ -2,6 +2,7 @@ import Level from '../models/sessionLevel';
 import User from '../models/ussdUserModel';
 import Product from '../models/Product';
 import FarmInput from '../models/requestInputs';
+import Insurance from '../models/insuranceCover';
 import { checkUser, ussdLevels, farmingInfo } from '../utils/helper/ussdHelper';
 import { validateEmail, validateID } from '../utils/helper/helper';
 import sendSms from '../utils/helper/sendSms';
@@ -74,6 +75,13 @@ export default class UssdController {
             res.contentType('text/plain');
             res.status(200).send(message);
 
+            break;
+          case '3':
+            // eslint-disable-next-line max-len
+            await Level.findOneAndUpdate({ phoneNumber }, { $set: { level: ussdLevels.insuranceCover1 } });
+            message = 'CON Please enter category of your farming ie(patatoes farming,maize farming etc).';
+            res.contentType('text/plain');
+            res.status(200).send(message);
             break;
           case '4':
             // upgrade user level
@@ -248,6 +256,46 @@ export default class UssdController {
             // eslint-disable-next-line max-len
             await Level.findOneAndUpdate({ phoneNumber }, { $set: { level: ussdLevels.home } });
             message = 'END Your input request has been received successfully, and is being acted on.\n';
+            res.contentType('text/plain');
+            res.status(200).send(message);
+            break;
+        }
+      }
+      // handle insurance cover request here case 3 option here
+      if (userLevel === ussdLevels.insuranceCover1) {
+        switch (lastUserInput) {
+          case '':
+            message = 'CON Please enter category of your farming or press 0 to go back.\n';
+            message += '0. Go back. \n';
+            res.contentType('text/plain');
+            res.status(200).send(message);
+            break;
+          case '0':
+            // downgrade the level to home and present the menu
+            await Level.findOneAndUpdate({ phoneNumber }, { $set: { level: ussdLevels.home } });
+            // provide menu options
+            message = 'CON Please select an option.\n';
+            message += '1. Request Farm Inputs.\n';
+            message += '2. Request Farming Information.\n';
+            message += '3. Request Insurance Cover.\n';
+            message += '4. Upload A Product.\n';
+            res.contentType('text/plain');
+            res.status(200).send(message);
+            break;
+          default:
+            // eslint-disable-next-line no-case-declarations
+            const newInsuranceCover = new Insurance({
+              // eslint-disable-next-line no-underscore-dangle
+              user: user._id,
+              phoneNumber,
+              farmingCategory: lastUserInput
+            });
+
+            await newInsuranceCover.save();
+            await Level.findOneAndUpdate({ phoneNumber }, { $set: { level: ussdLevels.home } });
+            // eslint-disable-next-line operator-linebreak
+            message =
+              'END Your request for insurance cover has been received successfully. Thankyou for using goOrganic.\n';
             res.contentType('text/plain');
             res.status(200).send(message);
             break;
