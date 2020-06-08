@@ -209,4 +209,31 @@ export class AdminController {
       return next(e);
     }
   }
+
+  // manage user acoount
+  static async updateUserDetails(req, res) {
+    try {
+      const user = await User.findById(req.user.user.id);
+
+      if (!user) {
+        return res.status(404).json({
+          status: false,
+          message: 'No user with this id'
+        });
+      }
+
+      // eslint-disable-next-line max-len
+      const updatedUserDetails = await User.findOneAndUpdate({ _id: user.id }, { $set: req.body }, { new: true });
+      return res.status(202).json({
+        status: true,
+        message: 'Update successful',
+        updatedUserDetails
+      });
+    } catch (err) {
+      return res.status(404).json({
+        status: false,
+        message: `An error occurred: ${err}`
+      });
+    }
+  }
 }
