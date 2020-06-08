@@ -12,7 +12,7 @@ export class FarmerController {
       const cleanInput = await FarmerValidator.validate(input, { abortEarly: false });
 
       const result = await FarmerService.add(cleanInput);
-      if (!result) return res.status(400).send({ success: false, message: 'user with email already exists' });
+      if (!result) return res.status(400).send({ status: false, message: 'user with email already exists' });
       return res.status(200).send({
         success: !!result
       });
