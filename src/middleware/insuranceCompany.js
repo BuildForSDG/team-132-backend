@@ -1,5 +1,10 @@
 import Insurance from '../models/insuranceCompany';
 
+/**
+ * Validate insurance companies data
+ * Make sure insurance name is unique to every business
+ * Make sure insurance phone number is unique
+ */
 export default class InsuranceCompanyValidator {
   // make sure business name is unique
   static uniqueInsuranceName(req, res, next) {
