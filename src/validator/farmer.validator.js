@@ -13,7 +13,7 @@ export const FarmerValidator = object().shape({
       const res = this && this.isType(value) && value !== null ? value.toLowerCase() : value;
       return res;
     })
-    .oneOf(['farmer', 'insurance-company', 'agro-chemical-company', 'go-organic-company', 'buyer'])
+    .oneOf(['farmer', 'agro-chemical-company', 'buyer', 'admin'])
     .default('farmer')
 });
 export const validateSignIn = object().shape({
