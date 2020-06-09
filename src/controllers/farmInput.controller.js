@@ -4,9 +4,9 @@ import { farmInputValidator } from '../validator/farmInputValidator';
 export default class FarmInputController {
   static async postInput(req, res) {
     try {
-      const { id } = req.user;
+      const { user } = req.user;
       const validInput = await farmInputValidator.validate(req.body, { abortEarly: false });
-      const farmInput = new FarmInput({ user: id, ...validInput });
+      const farmInput = new FarmInput({ user: user.id, ...validInput });
       await farmInput.save();
       return res.status(200).json({ farmInput, success: true });
     } catch (error) {
@@ -16,11 +16,14 @@ export default class FarmInputController {
 
   static async updateFarmInput(req, res) {
     try {
-      const { id } = req.user;
+      const {
+        user: { id }
+      } = req.user;
       const validInput = await farmInputValidator.validate(req.body, { abortEarly: false });
       const farmInputId = req.params.id;
       const farmInput = await FarmInput.findOne({ _id: farmInputId });
       if (!farmInput) return res.status(400).json({ msg: 'product not found', success: false });
+
       if (id.toString() !== farmInput.user.toString()) return res.status(401).send({ msg: 'you are not authorized' });
 
       const { name, price, description } = validInput;
