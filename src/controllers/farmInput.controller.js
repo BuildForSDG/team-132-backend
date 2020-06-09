@@ -16,15 +16,14 @@ export default class FarmInputController {
 
   static async updateFarmInput(req, res) {
     try {
-      const {
-        user: { id }
-      } = req.user;
+      const { user } = req.user;
       const validInput = await farmInputValidator.validate(req.body, { abortEarly: false });
       const farmInputId = req.params.id;
       const farmInput = await FarmInput.findOne({ _id: farmInputId });
       if (!farmInput) return res.status(400).json({ msg: 'product not found', success: false });
 
-      if (id.toString() !== farmInput.user.toString()) return res.status(401).send({ msg: 'you are not authorized' });
+      if (user.id.toString() !== farmInput.user.toString())
+        return res.status(401).send({ msg: 'you are not authorized' });
 
       const { name, price, description } = validInput;
       const { imageUrl, quantity } = validInput;
