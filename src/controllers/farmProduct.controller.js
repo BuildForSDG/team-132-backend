@@ -1,4 +1,5 @@
 import Products from '../models/Product';
+
 export default class FarmProduct {
   static async getAllFarmProducts(req, res) {
     try {
