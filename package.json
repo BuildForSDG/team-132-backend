@@ -19,9 +19,7 @@
     "jest:clear:cache": "jest --clearCache",
     "lint": "eslint \"src/**/*.js\"",
     "linting": "eslint '**/*.js' --ignore-pattern node_modules/",
-    "dev": "nodemon --exec babel-node src/server.js",
     "start": "nodemon --exec babel-node src/server.js",
-    "build": "rm -rf dist && mkdir dist && babel . --ignore node_modules -d dist"
   },
   "author": {
     "name": "Build For SDG",
