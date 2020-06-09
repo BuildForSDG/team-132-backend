@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import InsuranceMiddleware from '../middleware/insuranceCompany';
+import AdminMiddleware from '../middleware/admin';
 import { AdminController } from '../controllers/adminController';
 import isAuth from '../middleware/auth';
 import accessControl from '../middleware/access';
@@ -39,6 +40,15 @@ router.delete(
   isAuth,
   accessControl.restrictAccessTo('admin'),
   AdminController.deleteAgroChemical
+);
+
+// update profile
+router.patch(
+  '/update-profile',
+  isAuth,
+  accessControl.restrictAccessTo('admin'),
+  AdminMiddleware.checkEmptyValues,
+  AdminController.updateUserDetails
 );
 
 export default router;
