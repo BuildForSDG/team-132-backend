@@ -14,7 +14,8 @@ const { getSingleFarmInput } = FarmInputController;
 const { getAllFarmProducts, getSingleFarmProduct } = FarmProduct;
 
 const { register, getAllUsers, signIn } = FarmerController;
-
+router.get('/farm-product', isAuth, getAllFarmProducts);
+router.get('/farm-input/', isAuth, getAllFarmInputs);
 router.post('/register', register);
 router.post('/sign-in', signIn);
 const { registerFarmer } = UssdController;
@@ -25,9 +26,7 @@ router.delete('/:id', isAuth, accessControl.restrictAccessTo('admin'), FarmerCon
 router.post('/create-ussd-account', registerFarmer);
 router.post('/farm-input', isAuth, accessControl.restrictAccessTo('agro-chemical-company'), postInput);
 router.put('/farm-input/:id', isAuth, accessControl.restrictAccessTo('agro-chemical-company'), updateFarmInput);
-router.get('/farm-input/', isAuth, getAllFarmInputs);
 router.get('/farm-input/:id', isAuth, getSingleFarmInput);
-router.get('/farm-product', isAuth, getAllFarmProducts);
 router.get('/farm-product/:id', isAuth, getSingleFarmProduct);
 
 export default router;
